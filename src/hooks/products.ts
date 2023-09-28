@@ -7,17 +7,21 @@ export function useProducts(){
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const addProduct = (product: IProduct) => {
+    setProducts(prevState => [...prevState, product]);
+  };
+
   async function fetchProducts() {
     try {
       setError('');
-    setLoading(true);
-    const response = await axios.get<IProduct[]>('https://fakestoreapi.com/products?limit=5');
-    setProducts(response.data);
-    setLoading(false);
-    } catch (e: unknown) {
-      const error = e as AxiosError;
+      setLoading(true);
+      const response = await axios.get<IProduct[]>('https://fakestoreapi.com/products?limit=5');
+      setProducts(response.data);
       setLoading(false);
-      setError(error.message);
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        setLoading(false);
+        setError(error.message);
     }
   }
 
@@ -25,5 +29,5 @@ export function useProducts(){
     fetchProducts();
   }, []);
 
-  return { products, error, loading };
+  return { products, error, loading, addProduct };
 }

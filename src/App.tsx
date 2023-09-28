@@ -1,26 +1,18 @@
-import { Product } from "./components/product";
-import { useProducts } from "./hooks/products";
-import {Loader} from "./components/loader";
-import {ErrorMessage} from "./components/errorMessage";
-import {Modal} from "./components/modal";
-import {CreateProduct} from "./components/createProduct";
-import {useState} from "react";
+import {Route, Routes} from "react-router-dom";
+import {ProductsPage} from "./pages/productsPage";
+import {AboutPage} from "./pages/aboutPage";
+import {Navigation} from "./components/navigation";
 
 function App() {
-
-  const {loading, error, products} = useProducts();
-    const [modal, setModal] = useState(true);
-
-    return(
-    <div>
-      {loading && <Loader />}
-      {error && <ErrorMessage error={error} />}
-      { products.map(product => <Product product={product} key={product.id} />) }
-        {modal && <Modal title="Create new product">
-            <CreateProduct onCreate={() => setModal(false)}/>
-        </Modal>}
-    </div>
-  );
+    return (
+        <>
+            <Navigation />
+            <Routes>
+                <Route path="/" element={<ProductsPage />}/>
+                <Route path="/about" element={<AboutPage />}/>
+            </Routes>
+        </>
+    );
 }
 
 export default App;
